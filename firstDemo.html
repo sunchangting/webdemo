@@ -26,6 +26,7 @@
 </div>
 <div>week:<input type="week">
 </div>
+<hr/>
 <div><h3>datalist标签示例：</h3>
     <datalist id="list3">
         <option>青椒肉丝</option>
@@ -35,5 +36,54 @@
     </datalist>
     <input type="text" list="list3">
 </div>
+<hr/>
+<div><h3>progress进度条标签：</h3>
+    左右滑动的进度条:
+    <progress></progress>
+    <br/>
+    固定位置的进度条：
+    <progress value="0.7"></progress>
+    <br/>
+    定时器执行的进度条：
+    <progress id="p2" value="0"></progress>
+</div>
+<hr/>
+<div><h3>meter刻度尺标签：</h3>
+    用于标示一个值所处范围(min最小值、max最大值、low合理下限、
+    high合理上限、optimum最佳值、value当前实际值)：<br/>
+    我的工资：红色（不可接受）、黄色（可接受）、绿色（很好）
+    <meter id="m3" min="0" max="10000"
+           low="2000" high="8000"
+           optimum="9999" value="0"></meter>
+</div>
+<hr/>
+<div><h3>output输出标签（就相当于span，没啥特别）：</h3>
+    商品价格：￥2.5<br/>
+    商品数量：<input type="number" value="1"><br/>
+    小计：<output>￥2.5</output>
+</div>
 </body>
+<script>
+    //2.刻度尺
+    var m3=document.getElementById("m3");
+    var timer2 = setInterval(function () {
+        if (m3.value>10000){
+            clearInterval(timer2);
+        }
+        if (m3.value == 1) {
+            clearInterval(timer);
+        }
+        m3.value = m3.value + 500;
+        // p2.setAttribute("value",p2.value+0.1);
+    }, 1000);
+    //1.创建前进的进度条
+    var p2 = document.getElementById("p2");
+    var timer = setInterval(function () {
+        if (p2.value == 1) {
+            clearInterval(timer);
+        }
+        p2.value = p2.value + 0.1;
+        // p2.setAttribute("value",p2.value+0.1);
+    }, 1000);
+</script>
 </html>
