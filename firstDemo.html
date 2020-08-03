@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>H5新标签</title>
+    <style>
+        b{
+            color:red;
+        }
+    </style>
 </head>
+
 <body>
-<h3>输入框类型：</h3>
+<h2>H5新标签</h2>
+<b>input的type输入框类型：</b><br/>
 <div>email:<input type="email">
 </div>
 <div>url:<input type="url">
@@ -27,7 +34,7 @@
 <div>week:<input type="week">
 </div>
 <hr/>
-<div><h3>datalist标签示例：</h3>
+<div><b>datalist标签示例：</b><br/>
     <datalist id="list3">
         <option>青椒肉丝</option>
         <option>蛋炒饭</option>
@@ -37,7 +44,7 @@
     <input type="text" list="list3">
 </div>
 <hr/>
-<div><h3>progress进度条标签：</h3>
+<div><b>progress进度条标签：</b><br/>
     左右滑动的进度条:
     <progress></progress>
     <br/>
@@ -48,7 +55,7 @@
     <progress id="p2" value="0"></progress>
 </div>
 <hr/>
-<div><h3>meter刻度尺标签：</h3>
+<div><b>meter刻度尺标签：</b><br/>
     用于标示一个值所处范围(min最小值、max最大值、low合理下限、
     high合理上限、optimum最佳值、value当前实际值)：<br/>
     我的工资：红色（不可接受）、黄色（可接受）、绿色（很好）
@@ -57,17 +64,22 @@
            optimum="9999" value="0"></meter>
 </div>
 <hr/>
-<div><h3>output输出标签（就相当于span，没啥特别）：</h3>
+<div><b>output输出标签（就相当于span，没啥特别）：</b><br/>
     商品价格：￥2.5<br/>
     商品数量：<input type="number" value="1"><br/>
-    小计：<output>￥2.5</output>
+    小计：
+    <output>￥2.5</output>
+</div>
+<hr/>
+<div>
+
 </div>
 </body>
 <script>
     //2.刻度尺
-    var m3=document.getElementById("m3");
+    var m3 = document.getElementById("m3");
     var timer2 = setInterval(function () {
-        if (m3.value>10000){
+        if (m3.value > 10000) {
             clearInterval(timer2);
         }
         if (m3.value == 1) {
