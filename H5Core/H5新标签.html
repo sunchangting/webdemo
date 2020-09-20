@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>H5新标签</title>
     <style>
-        b{
-            color:red;
+        b {
+            color: red;
         }
     </style>
 </head>
@@ -71,11 +71,45 @@
     <output>￥2.5</output>
 </div>
 <hr/>
-<div>
-
+<div><b>新表单元素新属性——autofocus（自动聚焦）、multiple（可以输入多个值用逗号隔开）、form属性（可以将form表单外的标签内容提交到表单中）</b><br/>
+    <b>属性required必填项、minlength、maxlength指定字符串最小最大长度、min、max指定数字最小最大值、pattern正则表达式</b><br/>
+    <form action="#" id="form2">
+        用户名：<input type="text" name="username" placeholder="请输入用户名" autofocus required minlength="3"
+                   maxlength="8"/><br/>
+        密 码：<input type="password" name="password" placeholder="请输入密码"><br/>
+        邮 箱：<input type="email" name="myemail" multiple/><br/>
+        <input type="submit" value="提交"/>
+    </form>
+    年 龄：<input type="number" name="myage" value="18" form="form2" min="5" max="60"/><br/>
+    电 话：<input type="tel" name="mytel" value="" form="form2" pattern="1[345789]\d{9}"/><br/>
 </div>
+<hr/>
+<div>
+    <b>video标签及其成员属性</b><br/>
+    autoplay:false——是否自动播放<br/>
+    controls:false——是否显示播放控件<br/>
+    loop:false————是否循环播放<br/>
+    muted:false————是否静音<br/>
+    poster:false——是否在第一帧之间显示海报=>图片<br/>
+    preload: 视频的预加载策略 auto：预加载视频的元数据以及缓冲一定时长视频<br/>
+    —————————————— metadata：预加载视频的元数据（元数据即这个视频的时长）<br/>
+    ————————————— none：不预加载任何东西<br/>
+    <b>下方是一个视频资源，但是没有显示出来！，可能是视频的编码格式不对</b><br/>
+    <video id="v2" autoplay muted controls poster="../images/002.png">
+        <source src="../video/1-1%20SpringCloud导学.mp4"/>
+        <source src="video/1-1 SpringCloud导学.ogg"/>
+        <source src="video/1-1 SpringCloud导学.webm"/>
+        您的浏览器版本太低，请升级最新版本
+    </video>
+    <br>
+    <input type="image" src="../images/001.png"/><br/>
+</div>
+<hr/>
+
 </body>
 <script>
+
+
     //2.刻度尺
     var m3 = document.getElementById("m3");
     var timer2 = setInterval(function () {

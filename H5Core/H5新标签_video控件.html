@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>video控件demo</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .ctrl {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -60px;
+            margin-top: -60px;
+
+        }
+
+        .ctrl img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .ad {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 200px;
+            height: 100px;
+            margin-left: -100px;
+            margin-top: -50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <b>控件自己编写</b><br/>
+    <video id="v3" src="../video/1-1%20SpringCloud导学.mp4" loop>您的浏览器版本太低</video>
+    <!--广告-->
+    <img class="ad" src="../images/广告.png">
+    <!--按钮-->
+    <a class="ctrl" href="#"><img src="../images/播放控件.png"></a>
+</div>
+<script>
+    //1.不使用video自带的controls，自定义播放暂停按钮，鼠标移除视频，隐藏按钮，反之……
+    //todo:1.移入鼠标移入显示控件，移除则隐藏控件
+    var container = document.querySelector(".container");
+    var ctrl = document.querySelector(".ctrl");
+    container.onmouseenter = function () {//鼠标移入div，显示a
+        ctrl.style.display = "block";
+
+    }
+    container.onmouseleave = function () {//鼠标移出div，隐藏a
+        ctrl.style.display = "none";
+    }
+    //todo:2.通过点击播放控件，控制视频的播放和暂停
+    var v3 = document.getElementById("v3");
+    var ctrlImg = document.querySelector(".ctrl img");//todo:推荐使用
+    ctrl.onclick = function (e) {
+        e.preventDefault();//因为它是超链接，点击默认会跳转，故而阻止它跳转
+        if (v3.paused == true) {
+            v3.play();
+            ctrlImg.src = "images/播放控件.png";//转换成暂停按键
+        } else {
+            v3.pause();
+            ctrlImg.src = "images/播放控件.png";//转换成播放按键
+        }
+    }
+    //todo：3.暂停视频则显示广告，反之隐藏
+    var ad = document.querySelector(".ad");
+    v3.onplay = function () {
+        ad.style.display = "none";
+    }
+    v3.onpause = function () {
+        ad.style.display = "block";
+    }
+</script>
+</body>
+
+</html>
