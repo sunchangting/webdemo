@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音频</title>
+</head>
+<body>
+<h1>H5新特性——音频播放</h1>
+<hr/>
+<audio controls></audio>
+<hr/>
+<audio id="mbg" src="../../video/大芒果呀_ - 与你最后的夏天(cover).mp3" autoplay loop></audio>
+<label>
+    <input type="checkbox" id="bg"/>
+    是否播放背景音乐
+</label>
+<script>
+    var bg = document.getElementById("bg");
+    var mbg = document.getElementById("mbg");
+    bg.onchange = function () {
+        if (this.checked) {
+            //音量渐渐变大效果 volume {0~1}  //定时器 0+0.1
+            mbg.volume = 0;
+            mbg.play();
+            var count=0;
+            var t = setInterval(function () {
+                mbg.volume += 0.1;
+                count++;
+                if (mbg.volume > 0.9) {
+                    clearInterval(t);
+                    console.log(count)
+                }
+            }, 200);
+        } else {
+            mbg.pause();
+        }
+    }
+</script>
+</body>
+</html>

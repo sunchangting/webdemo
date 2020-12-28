@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>two.js</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        canvas, svg {
+            background: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<h1>使用two.js创建圆形和矩形</h1>
+<div id="box"></div>
+<script src="two.min.js"></script>
+<script>
+    // 1.创建two对象，指定画布宽高，canvas，svg
+    var two = new Two({
+        width: 800,
+        height: 400,
+        tye: Two.Types.svg
+    }).appendTo(box);
+    //    2.创建矩形圆形 cx，cy，r
+    var c = two.makeCircle(-200, 0, 100);
+    var r = two.makeRectangle(200, 0, 200, 200);//矩形中心参数和宽和高
+    //    让矩形旋转60度、two.js中所有旋转都是以自己为中心、旋转不会累加
+    //     r.rotation=60*Math.PI/180;
+    //    two.js中小组（group）本身透明不可见，可用于盛放多个其他图形，默认原点为（0,0），小组中元素相对于小组原点
+    var g = two.makeGroup(r, c);
+    g.translation.set(400, 200);//将整个画布平移使原来的（0,0）移动到（400,200）
+    // g.rotation=30*Math.PI/180;
+    //    3.将绘制图形更新dom树
+    //     two.update();
+    //    4.two.js动画原理：调用two.play(); 方法每秒钟调用60次two.update();
+    //    每次调用触发一次update事件
+    var deg = 0;
+    two.on("update", function () {
+        deg += 1;
+        g.rotation = deg * Math.PI / 180;
+    });
+    two.play();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖放事件</title>
+</head>
+<body>
+<h1>拖动源对象可能触发的事件</h1>
+<img src="../../images/广告.png" id="p3">
+<h1>拖动目标对象可能触发的事件</h1>
+<img src="../../images/广告.png" id="p4">
+<script>
+    //1.源对象拖动开始
+    p3.ondragstart=function () {
+        console.log("drag start..........");
+    }
+    //2.源对象拖动中
+    p3.ondrag=function () {
+        console.log("drag");
+    }
+    //3.源对象拖动结束
+    p3.ondragend=function () {
+        console.log("drag end");
+    }
+
+    //进入目标对象
+    p4.ondragenter=function () {
+        console.log("drag enter..........");
+    }
+    //悬停在目标对象上方
+    p4.ondragover=function (e) {
+        //必须阻止默认行为，使得drop可以触发
+        e.preventDefault();
+        console.log("drag over..........");
+    }
+    //拖动着离开
+    p4.ondragleave=function () {
+        console.log("drag leave..........");
+    }
+    //在目标对象上释放
+    p4.ondrop=function () {
+        console.log("drag drop..........");
+    }
+</script>
+</body>
+</html>

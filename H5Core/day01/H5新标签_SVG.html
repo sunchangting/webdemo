@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>svg</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        svg{
+            background: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<h3>svg图形</h3>
+<img src="01.svg"><br>
+<!--svg中的标签：矩形-rect；圆形-circle；椭圆-ellipse；直线-line；折线-polyline；多边形-polygon
+       文本-text；-->
+<h3>svg事件监听事件</h3>
+<svg id="s1" width="500" height="400">
+    <!--g标签即group小组的意思，对内部每个标签对象进行包了一个边-->
+    <g stroke="#000" stroke-linecap="round" stroke-width="5">
+        <circle r="25" cx="25" cy="375" fill="red"></circle>
+        <ellipse rx="25" ry="20" cx="475" cy="380" fill="blue"></ellipse>
+    </g>
+    <line x1="200" y1="390" x2="300" y2="390" stroke-width="10"
+          stroke="green" stroke-linecap="round"></line>
+    <polyline points="10,100 20,150 10,200" stroke="#000" fill="transparent" stroke-width="5"></polyline>
+    <polygon points="10,60 20,70 10,80" stroke="#000" fill="transparent" stroke-width="2"></polygon>
+    <text font-size="25" alignment-baseline="before-edge" fill="transparent"
+          stroke="#000" x="170" y="0">达内科技2017</text>
+    <rect id="r1" height="1" width="30" x="235" y="350" fill="#0f0"
+          fill-opacity="0.3" stroke="#800" stroke-opacity="0.3"></rect>
+    <!--图片的引入-->
+    <image xlink:href="../../images/广告.png" width="200" height="100" x="300" y="200"></image>
+    <!--特效对象的定义-->
+    <defs>
+        <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="red"></stop>
+            <stop offset="17%" stop-color="orange"></stop>
+            <stop offset="34%" stop-color="yellow"></stop>
+            <stop offset="51%" stop-color="green"></stop>
+            <stop offset="68%" stop-color="cyan"></stop>
+            <stop offset="85%" stop-color="blue"></stop>
+            <stop offset="1" stop-color="purple"></stop>
+        </linearGradient>
+    </defs>
+    <rect fill="url(#g3)" stroke="url(#g3)" width="70" height="180" x="100" y="100"></rect>
+    <text fill="url(#g3)" stroke="url(#g3)" font-size="20" alignment-baseline="before-edge" x="20" y="50">一段文本</text>
+    <!--高斯模糊滤镜-->
+    <defs>
+        <filter id="f1">
+            <feGaussianBlur stdDeviation="3"></feGaussianBlur>
+        </filter>
+    </defs>
+    <text font-size="20" alignment-baseline="before-edge" x="20" y="90">一段文本</text>
+    <text filter="url(#f1)" stroke="#000" font-size="20" alignment-baseline="before-edge" x="20" y="70">一段文本</text>
+
+    <!--svg相关知识，贝塞尔曲线——用来画曲线的方式（复杂的图形）-->
+    <!--fill-opacity透明度-->
+    <!--<rect height="100" width="200" x="0" y="100" fill-opacity="0.2" fill="#0f0"></rect>-->
+    <!--<rect height="100" width="200" x="300" y="0" stroke="#f00"-->
+          <!--stroke-width="3" fill="transparent"></rect> &lt;!&ndash;transparent是空白的意思&ndash;&gt;-->
+
+
+</svg>
+<script>
+    //todo:发现可以通过id直接表示对象
+    r1.onmousemove=function () {//绑定监听事件
+        this.setAttribute("fill-opacity",1);
+        this.setAttribute("stroke-opacity",1);
+    }
+    r1.onmouseout=function () {
+        this.setAttribute("fill-opacity",0.3);
+        this.setAttribute("stroke-opacity",0.3);
+    }
+    // 一个逐渐上升的柱状图
+    var timer=setInterval(function () {
+        var h=parseInt(r1.getAttribute("height"));
+        var y=parseInt(r1.getAttribute("y"));
+        h+=3;
+        y-=3;
+        r1.setAttribute("height",h);
+        r1.setAttribute("y",y);
+        console.log("高:"+h+";y:"+y)
+        if (h>300){
+            clearInterval(timer);
+        }
+    },50);
+    //在svg中创建元素
+//    方式1：拼接html字符串方式
+    var html=`<rect width="50" height="50" x="0" y="0" fill="#f00"></rect>`;
+    console.log(s1)
+    s1.innerHTML+=html;
+   // 方式2：使用document.createElementNS();
+    var rect=document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rect.setAttribute("x",450);
+    rect.setAttribute("y",0);
+    rect.setAttribute("width",50);
+    rect.setAttribute("height",50);
+    rect.setAttribute("fill","red");
+    s1.appendChild(rect);
+
+
+</script>
+</body>
+</html>

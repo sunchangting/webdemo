@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        canvas {
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+<canvas id="c2" width="500" height="400">
+    您的浏览器版本太低不能显示canvas，请更新
+</canvas>
+<script>
+
+    // =================================================
+    //1.获取画笔对象；
+    var c2 = document.getElementById("c2");
+    var ctx = c2.getContext("2d");
+    //======================1.画矩形=========================
+    // // 2.设置描边或填充样式；
+    // ctx.strokeWidth = 1;
+    // ctx.strokeStyle = "red";
+    // // 3.描制矩形
+    // ctx.strokeRect(0, 0, 100, 100);
+    // //4.实心矩形
+    // ctx.fillStyle = "blue";//设置填充矩形样式为蓝色
+    // ctx.fillRect(100, 100, 100, 100);
+    //
+    // //画出一个矩形左右移动
+    // var count = 0;
+    // var xDirection = 1;
+    // var t = setInterval(function () {
+    //     if (count >= 400) {
+    //         xDirection = -1;
+    //
+    //     } else if (count <= 0) {
+    //         xDirection = 1;
+    //     }
+    //     count += 5 * xDirection;
+    //     ctx.clearRect(0, 0, 500, 400);
+    //     ctx.strokeRect(count, 0, 100, 100);
+    // }, 200);
+    // ==================2.画文本=======================
+    // var str = "tarena";
+    // //值有top（四线三格的第一条线）、buttom（四线三格的第四条线）、alphabetic (四线三格的第三条线)默认的
+    // ctx.textBaseline="top";
+    // ctx.fillStyle="red";
+    // ctx.strokeStyle="blue";
+    // ctx.font="29px sans-serif";//字大小以及字体
+    // ctx.fillText(str,0,30);//实心的字
+    // ctx.strokeText(str,0,60);//空心的字
+    // var obj=ctx.measureText(str);//返回一个对象，里面有个文本宽度的属性
+    // console.log("文本的宽度为："+obj.width);
+    // ==================2.绘图渐变对象=======================
+    // 1.创建渐变对象
+    // var g=ctx.createLinearGradient(0,0,500,0);//线性渐变对象
+    // //2.设置颜色点
+    // g.addColorStop(0,"blue");
+    // g.addColorStop(0.5,"red");
+    // g.addColorStop(1,"green");
+    // //3.将渐变对象赋值填充样式，描边样式
+    // ctx.fillStyle=g;
+    // ctx.fillRect(0,0,500,30);
+    // ==================3.绘图树状图=======================
+    // 创建一组变量
+    var w = 500;
+    var h = 400;
+    var pd = 50;//统计图的内容到画布的边界距离
+    // 绘制边界
+    ctx.strokeRect(pd, pd, w - 2 * pd, h - 2 * pd);
+    //todo:待完成
+
+    // ==================3.绘制路径=======================
+    ctx.beginPath();//开始新路径
+    ctx.moveTo(1, 1);//将画笔移动到指定点
+    ctx.lineTo(50, 1);//画直线
+    ctx.lineTo(50, 50);
+    ctx.lineTo(1, 50);
+    ctx.closePath();//将路径闭合
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = "red";
+    ctx.stroke();//将路径描边，否则看不见
+    //画出一个坐标轴
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.moveTo(10, 390);
+    ctx.lineTo(10, 100);
+    ctx.moveTo(5, 105);
+    ctx.lineTo(10, 100);
+    ctx.moveTo(15, 105);
+    ctx.lineTo(10, 100);
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(10, 390);
+    ctx.lineTo(400, 390);
+    ctx.moveTo(395, 385);
+    ctx.lineTo(400, 390);
+    ctx.moveTo(395, 395);
+    ctx.lineTo(400, 390);
+    ctx.strokeStyle = "green";
+    ctx.stroke();
+    //绘制一个圆拱形
+    ctx.beginPath();
+    ctx.arc(250, 200, 50, 0, 0.5 * Math.PI);//arc(圆心x，圆心y，半径，起始角度用PI表示，终止角度)
+    ctx.stroke();
+    //绘制一个进度条
+    ctx.beginPath();
+    ctx.lineWidth = 10;
+    ctx.arc(150, 150, 50, 0, 2 * Math.PI);
+    ctx.strokeStyle = "#aaa";
+    ctx.stroke();
+    var start = -90;
+    var end = -90;
+    var t1 = setInterval(function () {
+        ctx.beginPath();
+        ctx.arc(150, 150, 50, start * Math.PI / 180, end * Math.PI / 180);
+        end += 5;
+        ctx.strokeStyle = "green";
+        ctx.stroke();//fill()方法是将内部填充颜色了,clip()是对当前路径进行裁剪
+        if (end>260){
+            clearInterval(t1);
+        }
+    }, 200);
+
+    // ==================4.绘制图片=======================
+    var p3=new Image();//创建图片对象
+    p3.src="../../images/广告.png";//加载图片，发送请求并且下载图片
+    p3.onload=function () {//为图片对象绑定onload事件，下载完成触发onload事件
+        console.log("图片的宽为："+p3.width);
+        console.log("图片的高为："+p3.height);
+        ctx.drawImage(p3,300,200);//原始图片
+        ctx.drawImage(p3,300,0,200,100);//拉伸图片
+        // =====变形操作====
+        var deg=15*Math.PI/180;
+        ctx.save();//todo:保存画笔所有变形状态值
+        ctx.translate(250,200);//将画布的原点移动到（250,200）位置
+        ctx.drawImage(p3,0,0);
+        ctx.rotate(deg);//将画笔依据（0,0）旋转15度//todo:旋转具有累加的效果
+        ctx.drawImage(p3,0,0);
+        ctx.rotate(deg);
+        ctx.drawImage(p3,0,0);
+        ctx.restore();//todo:恢复画布变形状态值到最近一次保存
+
+    }
+
+
+
+
+</script>
+</body>
+</html>
