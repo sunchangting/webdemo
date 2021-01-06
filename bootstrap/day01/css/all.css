@@ -1,0 +1,35 @@
+/*如果是pc屏幕执行如下代码 >992px*/
+@media screen and (min-width: 992px) {
+    .box {
+        background: #0f0;
+        color: #f00;
+        font-size:14px;
+    }
+    h1{
+        font-size: 2em;
+    }
+}
+
+/*如果是pad屏幕执行如下代码 991~768px*/
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .box {
+        background: red;
+        color: #fff;
+        font-size: 12px;
+    }
+    h1{
+        font-size: 1em;
+    }
+}
+
+/*如果是phone屏幕执行如下代码 <767px*/
+@media screen and (max-width: 767px) {
+    .box {
+        background: blue;
+        color: #fff;
+        font-size: 10px;
+    }
+    h1{
+        font-size: 1em;
+    }
+}

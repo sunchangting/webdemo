@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue第一个demo</title>
+</head>
+<body>
+<h3>vue第一个示例</h3>
+<div id="app">
+    <!--3.显示数据,这里是view-->
+    <h4>{{message}}</h4>
+    <!--数学运算-->
+    <h4>{{3+5}}</h4>
+    <!--对象属性-->
+    <h4>{{car.brand}}</h4>
+    <!--三目运算-->
+    <h4>{{count>totalNum?"success":"error"}}</h4>
+    <!--布尔值-->
+    <h4>{{hasMore}}:{{!hasMore}}</h4>
+    <!--数据内容按字符串输出-->
+    <h4>{{html}}</h4>
+    <ul>
+        <li v-for="item in items">{{item}}</li>
+    </ul>
+    <ul>
+        <!--有的版本好像key和val位置反了-->
+        <li v-for="(key,val) in items">{{key}}:{{val}}</li>
+    </ul>
+    <hr/>
+    <!--v-model是一个指令，将input中的vue对象的message绑定一起，双向绑定-->
+    <input type="text" v-model="message"/>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+    //1.这里创建model（数据）
+    var exampledata = {
+        message: "hello vue",
+        html: "<h6>hello vue</h6>",
+        items: [2231, 4433, 443, 4455],
+        count: 3,
+        totalNum: 10,
+        hasMore: true,
+        car: {
+            brand: "volvo",
+        }
+    };
+    //2.创建vue实例（ViewModel）
+    new Vue({
+        el: "#app",//el:vue对象挂载app元素
+        data: exampledata //数据:exampledata
+    });
+</script>
+</body>
+</html>

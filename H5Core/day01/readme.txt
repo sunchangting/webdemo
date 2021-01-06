@@ -54,5 +54,52 @@ UI主线程：var w=new Worker("1.js");
              w.postMessage（strmessage）;
 Worker线程：onmessage=function（e）{e.data};
 
+####
+WebStorage
+在客户端存储数据可以使用的技术
+1.Cookie技术：浏览器兼容性好，不能超过4KB，操作复杂
+2.Flash存储：依赖于Flash播放器
+3.H5 WebStorage：不能超过8MB，操作简单
+4.IndexDB：可存储大量数据，还不是标准技术
+session：会话，浏览器从打开某个网站的第一个页面开始，中间可能打开很多个页面，直到关闭浏览器，
+        整个过程称为"浏览器与web服务器的一次会话"。
+提供的api有：sessionStorage和localStorage
+sessionStorage——————
+sessionStorage[key]=val;            //保存一个数据
+sessionStorage.setItem(key,val);    //保存一个数据
+var val=sessionStorage[key];        //读取一个数据
+var val=sessionStorage.getItem(key);//读取一个数据
+sessionStorage.removeItem(key);     //删除一个数据
+sessionStorage.clear();             //清除数据
+sessionStorage.length;              //数据个数
+sessionStorage.key(i);              //获取第i个key
+localStorage——————本地存储对象（跨会话级存储）
+在浏览器能管理外存（磁盘）中存储用户数据，可供此次会话及后续会话的页面共同使用，
+即使浏览器关闭了也不会消失————永久存在。
+对应的api同sessionStorage。
+注意点：localStorage中若数据发生了修改，会触发事件window.onstorage,可以监听事件，
+实现监听localStorage数据改变的目的——不能监听sessionStorage数据修改。
+#####
+webSocket（略）
+
+Bootstrap————响应式框架
+介绍：responsive web page：响应式网页/自适应网页，2010年提出，一个网页，
+会根据用户浏览设备的不同，自动改变布局，可以pc、pad，phone正常浏览。
+响应式网页必备：
+1.流式布局：float：left；display：inline-block;
+2.可以改变尺寸图片
+3.可以改变大小的文字
+如何做网页手机适配
+1.声明viewport元标签
+<meta name ="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+2.使用流布局
+3.所有容器使用相对尺寸，不能使用绝对尺寸
+4.所有文字使用相对尺寸，不能使用绝对尺寸
+5.所有图片使用相对尺寸，不能使用绝对尺寸
+6.最重要原则————使用css3 media query（媒体查询）技术
+
+
+
+
 
 
