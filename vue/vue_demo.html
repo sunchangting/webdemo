@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>vue第一个demo</title>
+    <style>
+        .myRed {
+            color: red
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page > li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+
+    </style>
+
 </head>
 <body>
 <h3>vue第一个示例</h3>
 <div id="app">
+    <!--完成调用组件-->
+    <my-component></my-component>
+    <my-two-component></my-two-component>
     <!--3.显示数据,这里是view-->
     <h4>{{message}}</h4>
+    <hr/>
+    <!--v-model是一个指令，将input中的vue对象的message绑定一起，双向绑定-->
+    <input type="text" v-model="message"/>
     <!--数学运算-->
     <h4>{{3+5}}</h4>
     <!--对象属性-->
@@ -19,6 +44,7 @@
     <h4>{{hasMore}}:{{!hasMore}}</h4>
     <!--数据内容按字符串输出-->
     <h4>{{html}}</h4>
+
     <ul>
         <li v-for="item in items">{{item}}</li>
     </ul>
@@ -26,12 +52,76 @@
         <!--有的版本好像key和val位置反了-->
         <li v-for="(key,val) in items">{{key}}:{{val}}</li>
     </ul>
-    <hr/>
-    <!--v-model是一个指令，将input中的vue对象的message绑定一起，双向绑定-->
-    <input type="text" v-model="message"/>
+    <H4>循环的不是数组，给个数字也行</H4>
+    <ul :class="{page:hasPage}">
+        <li v-for="n in pageCount">{{n}}</li>
+    </ul>
+    <br/>
+
+    <h4 v-bind:style="{backgroundColor:bgBG}">我是标题，当点击下面按钮时会改变背景颜色</h4>
+    <!--v-on:click="回调方法名" 的简写是@click="回调方法名"-->
+    <button v-bind:disabled="isDisabled" @click="modifyColor">修改背景颜色</button>
+    <h4 v-bind:style="{backgroundColor:bgBG,color:myColor}">我是标题，当点击下面按钮时会改变背景颜色</h4>
+    <!--isRed为false将myRed删除-->
+    <p v-bind:class="{myRed:isRed}">文字是红色的吗？</p>
+    <!--绑定的简写-->
+    <button :disabled="isDisabled" @click="modifyColor">disabled</button>
+    <h4 v-if="count<11" @click="changeCount" v-change="count">自定义指令</h4>
+    <h4>下面用了一个过滤器：</h4>
+    <h4>{{price | myCurrent('￥')}}</h4>
 </div>
 <script src="js/vue.min.js"></script>
 <script>
+    // 创建第一个组件
+    Vue.component("my-component", {
+        template: `<h1>第一个组件</h1>`  //模板
+    });
+    // 创建第二个组件,注意：每个组件中又有独立的数据，方法，......
+    Vue.component("my-two-component", {
+        template: `<div>
+<h1 @click="handleClick">clickMe</h1>
+<h4>{{count}}</h4>
+</div>`, //模板
+        data: function () {
+            return {count: 0} //小心：写法特殊：每一个模板对象中有一独立数据
+        },
+        methods: {
+            handleClick: function () {
+                this.count++;
+                console.log(this.count)
+            }
+        },
+        beforeCreate:function () {
+            console.log("创建前")
+        },
+        created:function () {
+            console.log("创建后")
+        },
+        beforeMount:function () {
+            console.log("挂载前")
+        },
+        mounted:function () {
+            console.log("挂载后")
+        },
+        beforeUpdate:function () {
+            console.log("更新前")
+        },
+        updated:function () {
+            console.log("更新后")
+        },
+        beforeDestroy:function () {
+            console.log("销毁前")
+        },
+        destroyed:function () {
+            console.log("销毁后")
+        },
+        watch:{//监听属性，前面属性名称：函数
+            count:function () {
+                console.log("count发生了修改："+this.count)
+            }
+        }
+    });
+
     //1.这里创建model（数据）
     var exampledata = {
         message: "hello vue",
@@ -42,12 +132,64 @@
         hasMore: true,
         car: {
             brand: "volvo",
-        }
+        },
+        bgBG: "#ff0000",
+        myColor: "#0000ff",
+        isRed: true,
+        isDisabled: false,
+        pageCount: 10,
+        hasPage: true,
+        price: 356,
     };
     //2.创建vue实例（ViewModel）
     new Vue({
         el: "#app",//el:vue对象挂载app元素
-        data: exampledata //数据:exampledata
+        data: exampledata, //数据:exampledata
+        methods: {
+            modifyColor: function () {
+                //获取一个随机的颜色，赋值给bgBG
+                this.bgBG = this.getRandomColor();
+                this.myColor = this.getRandomColor();
+            },
+            getRandomColor: function () {
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                return `rgb(${r},${g},${b})`;
+            },
+            changeCount: function () {
+                this.count++;
+            }
+        },
+        directives: {
+            change: {//自定义指令v-change
+                bind: function (el, bindings) {
+                    console.log("指令绑定到元素上了")
+                },
+                update: function (el, bindings) {
+                    console.log("指令中数据发生变化")
+                    console.log(el) //我这个vue.js版本el表示绑定的值，获取对应的标签的方式还不知道是啥
+                },
+                unbind: function (el, bindings) {
+                    console.log("解除绑定")
+                    //卸载元素
+                }
+            }
+        },
+        filters: {
+            myCurrent: function (myInput, arg1) {//todo:我的过滤器没有起作用
+                console.log(myInput)
+                console.log(arg1)
+                // arg1是'￥'，myInput是price
+                var result = arg1 + myInput;
+                return result;
+            }
+        },
+        watch:{//监听属性，前面属性名称：函数
+            count:function () {
+                console.log("count发生了修改："+this.count)
+            }
+        }
     });
 </script>
 </body>
