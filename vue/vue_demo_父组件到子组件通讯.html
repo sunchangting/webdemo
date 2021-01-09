@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue第一个demo</title>
+    <style>
+        .myRed {
+            color: red
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page > li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+
+    </style>
+
+</head>
+<body>
+<h3>vue第三个示例</h3>
+<div id="app">
+    <parent></parent>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+    // 创建第一个组件
+    Vue.component("parent", {
+        methods:{
+            getData:function (msg) {
+                console.log("这是子组件传递过来的数据："+msg)
+            }
+        },
+        //传递一个变量
+        template: `<div>
+<h1>父组件</h1>
+<child @dataEvent="getData"></child>
+</div>`  //模板
+    });
+    // 创建第二个组件,注意：每个组件中又有独立的数据，方法，......
+    Vue.component("child", {//todo：不知道为啥没有传递成功，输不出来
+        template: `<div>
+                    <h1>子组件</h1>
+                    <button @click="setData">点击按钮发送数据给父组件</button>
+                   </div>`, //模板
+        methods:{
+            setData:function () {
+            this.$emit("dataEvent","交话费")//todo:不知道为啥没有生效
+        }
+        },
+        data: function () {
+            return {count: 0} //小心：写法特殊：每一个模板对象中有一独立数据
+        },
+        methods: {
+            handleClick: function () {
+                this.count++;
+                console.log(this.count)
+            }
+        },
+        beforeCreate: function () {
+            console.log("创建前")
+        },
+        created: function () {
+            console.log("创建后")
+        },
+        beforeMount: function () {
+            console.log("挂载前")
+        },
+        mounted: function () {
+            console.log("挂载后")
+        },
+        beforeUpdate: function () {
+            console.log("更新前")
+        },
+        updated: function () {
+            console.log("更新后")
+        },
+        beforeDestroy: function () {
+            console.log("销毁前")
+        },
+        destroyed: function () {
+            console.log("销毁后")
+        },
+        watch: {//监听属性，前面属性名称：函数
+            count: function () {
+                console.log("count发生了修改：" + this.count)
+            }
+        }
+    });
+
+    //1.这里创建model（数据）
+    var exampledata = {};
+    //2.创建vue实例（ViewModel）
+    new Vue({
+        el: "#app",//el:vue对象挂载app元素
+        data: exampledata, //数据:exampledata
+        methods: {},
+        directives: {},
+        filters: {},
+        watch: {//监听属性，前面属性名称：函数
+        }
+    });
+</script>
+</body>
+</html>

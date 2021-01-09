@@ -92,3 +92,37 @@ destroy：beforeDestroy destroyed  {清理工作}
 
 小结：Vue实例或者组件都有哪些属性
 el、data、methods、directives、filters、watch（监听属性）
+
+##### 组件之间数据传递与通讯（重点&难点）
+1.父组件->数据->子组件
+例见demo
+2.子组件->数据->父组件
+（1）在父组件中定义一个方法
+    methods:{
+    getData:function(msg){
+    //参数msg就是子组件通过事件传递过来的数据
+    }
+    }
+（2）在父组件模板中绑定事件处理函数
+<child @自定义事件名="方法名"></child>  示例：<child @dataEvent="getData"></child>
+（3）在子组件中触发事件，并传递数据
+this.$emit("触发事件名"，传递数据);     示例：  this.$emit("dataEvent"，"交话费");
+
+3.父子组件之间的通信 （$parent;$refs）### 这个前提是数据在data里，如果不在用上面的两种方法
+父组件获取子组件的数据：
+（1）在调用子组件的时候<child ref="自定义变量名"></child>  //表示子组件对象
+示例：<child ref="mySon"></child>
+（2）根据指定名称，找到子组件示例对象 this.$refs.mySon
+子组件想要获取父组件数据：
+（1）this.$parent
+
+4.兄弟组件之间的通信
+借助于一个公共的vue实例对象，不同的组件之间可以通过该对象完成事件绑定和触发
+var bus =new Vue()
+bus.$on(); //绑定事件
+bus.$emit(); //发送事件
+接收方： bus.$on("cutomeEvent",function(msg){
+//msg就是通过事件，传递来的数据
+});
+发送方：bus.$emit("cutomeEvent","......");
+

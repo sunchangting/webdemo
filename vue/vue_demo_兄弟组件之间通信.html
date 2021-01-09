@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue第一个demo</title>
+    <style>
+        .myRed {
+            color: red
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page > li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+
+    </style>
+
+</head>
+<body>
+<h3>vue第四个示例：父子组件之间通信，前提是数据在data中</h3>
+<div id="app">
+    <!--挂载兄弟组件-->
+    <xiong-da></xiong-da>
+    <xiong-er></xiong-er>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+    //1.创建公共Vue对象
+    var bus=new Vue();
+    Vue.component("xiong-da",{
+        template:`<div>
+<h4>熊大发数据</h4>
+<button @click="setData">发送</button>
+</div>`,
+        methods:{
+            setData:function () {
+                this.$emit("cutomeEvent","熊二，我是熊大,光头强又来偷木头了");
+            }
+        }
+
+
+    });
+    Vue.component("xiong-er",{
+        template:`<div>
+                <h4>熊二接收数据</h4>
+                </div>`,
+        mounted:function () {
+            bus.$on("cutomeEvent",function (msg) {
+                console.log("熊二接收到的数据为："+msg);//todo:并没有接收到
+            });
+        }
+
+    });
+    //4.
+    new Vue({el:"#app"});
+
+</script>
+</body>
+</html>

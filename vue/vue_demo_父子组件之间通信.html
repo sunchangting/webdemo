@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue第一个demo</title>
+    <style>
+        .myRed {
+            color: red
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page > li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+
+    </style>
+
+</head>
+<body>
+<h3>vue第四个示例：父子组件之间通信，前提是数据在data中</h3>
+<div id="app">
+    <parent></parent>
+</div>
+<script src="js/vue.min.js"></script>
+<script>
+    // 创建第一个组件
+    Vue.component("parent", {
+        //传递一个变量
+        template: `<div>
+                    <h1>父组件</h1>
+                    <child ref="mySon"></child>
+                    <button @click="getData">获取子组件数据</button>
+                    </div>` , //模板
+        data:function(){
+            return {
+                name:"牛魔王",
+            }
+        },
+        methods:{
+            getData:function () {
+                console.log("子组件中数据名字为："+this.$refs.mySon.name);//todo：这里没有识别出mySon，不知道为啥
+            }
+        }
+
+    });
+    // 创建第二个组件,注意：每个组件中又有独立的数据，方法，......
+    Vue.component("child", {//todo：不知道为啥没有传递成功，输不出来
+        template: `<div>
+                    <h1>子组件</h1>
+                    <button @click="getData">获取父组件数据</button>
+                   </div>`, //模板
+        methods:{
+            getData:function () {
+            console.log("父组件中数据名字为："+this.$parent.name)//todo:不知道为啥没有生效
+        }
+        },
+        data:function(){
+            return {
+                name:"红孩儿",
+            }
+        },
+
+        beforeCreate: function () {
+            console.log("创建前")
+        },
+        created: function () {
+            console.log("创建后")
+        },
+        beforeMount: function () {
+            console.log("挂载前")
+        },
+        mounted: function () {
+            console.log("挂载后")
+        },
+        beforeUpdate: function () {
+            console.log("更新前")
+        },
+        updated: function () {
+            console.log("更新后")
+        },
+        beforeDestroy: function () {
+            console.log("销毁前")
+        },
+        destroyed: function () {
+            console.log("销毁后")
+        },
+        watch: {//监听属性，前面属性名称：函数
+            count: function () {
+                console.log("count发生了修改：" + this.count)
+            }
+        }
+    });
+
+    //1.这里创建model（数据）
+    var exampledata = {};
+    //2.创建vue实例（ViewModel）
+    new Vue({
+        el: "#app",//el:vue对象挂载app元素
+        data: exampledata, //数据:exampledata
+        methods: {},
+        directives: {},
+        filters: {},
+        watch: {//监听属性，前面属性名称：函数
+        }
+    });
+</script>
+</body>
+</html>
