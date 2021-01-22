@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue第一个demo</title>
+    <style>
+        .myRed {
+            color: red
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page > li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <!--2.显示不同组件信息-->
+    <router-view></router-view>
+</div>
+<script src="js/vue.min.js"></script>
+<!--1.引入路由插件-->
+<script src="js/vue-router.js"></script>
+
+<script>
+    // 3.创建三个组件
+    // （接收参数）
+    var MyMain=Vue.component("my-main",{
+        template:`<div>
+                    <h1>用户名为{{uName}}</h1>
+                    <router-link to="/reg">注册</router-link>
+                   </div>`,
+        data:function () {
+            return {uName:0}//接收参数
+        },
+        mounted:function () {
+            //接收参数：
+            console.log(this.$route.params)
+            this.uName=this.$route.params.userName;
+        }
+    });
+    //发送参数
+    var MyLogin=Vue.component("my-login",{
+        template:`<div><h1>登录页面</h1>
+用户名:<input type="text" v-model="user_name"/><br/>
+        <button @click="doLogin">登录到主页面</button>
+        <router-link :to="'/main'+user_name">登录到主页面</router-link>
+        </div>`,
+        data:function () {
+            return {user_name:""}
+        },
+        methods:{
+            doLogin:function () {
+                this.$router.push("/main/"+this.user_name);//发送参数
+            }
+        }
+    });
+    var NotFound=Vue.component("not-found",{
+        template:`<div><h1>404 Page Not Found</h1>
+        <router-link to="/login">返回首页</router-link>
+        </div>`,
+        methods:{
+            jumpToLogin:function () {
+                this.$router.push("/login");//通过js编程方式来实现组件跳转
+            }
+        }
+    });
+    // 4.配置路由词典
+    const myRoutes=[
+        {path:"",component:MyLogin},//默认请求
+        {path:"/login",component:MyLogin},
+        {path:"/main/:userName",component:MyMain},
+        //没有匹配到上述任何一个路由地址：跳转404页面
+        {path:"*",component:NotFound}];
+    // 5.创建路由对象
+    const myRouter=new VueRouter({routes:myRoutes});
+    // 6.创建Vue对象，并指定路由对象
+    new Vue({
+        el:"#app",
+        router:myRouter,
+
+    });
+
+</script>
+</body>
+</html>

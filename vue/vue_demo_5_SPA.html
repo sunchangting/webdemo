@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue第一个demo</title>
+    <style>
+        .myRed {
+            color: red
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page > li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <!--2.显示不同组件信息-->
+    <router-view></router-view>
+</div>
+<script src="js/vue.min.js"></script>
+<!--1.引入路由插件-->
+<script src="js/vue-router.js"></script>
+
+<script>
+    // 3.创建多个组件
+    var testLogin=Vue.component("login",{
+        template:`<div>
+                    <h1>这是登录的页面</h1>
+                    <router-link to="/reg">注册</router-link>
+                   </div>`,
+    });
+    var testRegister=Vue.component("register",{
+        template:`<div><h1>这是注册的页面</h1>
+        <button @click="jumpToLogin">注册完成，去登录</button>
+        </div>`,
+        methods:{
+            jumpToLogin:function () {
+                this.$router.push("/login");//通过js编程方式来实现组件跳转
+            }
+        }
+    });
+    // 4.配置路由词典
+    const myRoutes=[
+        {path:"",component:testLogin},//默认请求
+        {path:"/login",component:testLogin},
+        {path:"/reg",component:testRegister}];
+    // 5.创建路由对象
+    const myRouter=new VueRouter({routes:myRoutes});
+    // 6.创建Vue对象，并指定路由对象
+    new Vue({
+        el:"#app",
+        router:myRouter,
+
+    });
+
+</script>
+</body>
+</html>

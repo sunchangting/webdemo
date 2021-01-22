@@ -126,3 +126,97 @@ bus.$emit(); //发送事件
 });
 发送方：bus.$emit("cutomeEvent","......");
 
+#####  Vue Router 路由
+SPA ：single page application 单页面应用程序，在一个完整的应用或者站点中，
+只有有一个完整的html页面，这个页面有一个容器，可以把需要加载的代码插入到改容器中
+SPA工作原理： http://127.0.0.1/index.html#/start
+（1）根据地址栏中url解析完的页面index.html加载index.html
+（2）根据地址栏，解析#后面路由地址：start，根据路由地址，去当前应用的配置
+中找路由地址配置对象去查找路由地址，所对应的模块页面地址，发起异步请求加载该页面地址
+SPA的实现步骤
+（1）引入对应的vue-router.js文件
+（2）显示组件 前：<div id="app"><parent></parent></div>
+             现：<div id="app">
+             <router-view></router-view>  //渲染不同组件
+             </div>
+（3）创建各个组件
+（4）配置信息（路由词典）——每个路由地址配置对象（组件）
+    const myRoutes=[
+    {path:"/start",component:myStart},
+    {path:"/list",component:myList}
+    ]
+（5）创建路由表对象（语法标签）
+    const myRouter=new VuewRouter({
+    routes:myRoutes
+    });
+（6）在Vue对象添加现在应用路由表对象
+    new Vue({
+    router:myRouter
+    })
+（7）测试
+
+SPA通过VueRouter来实现组件之间的跳转，提供三种方式
+（1）直接修改地址栏中路由地址
+（2）通过router-link实现跳转 <router-link to="/order">订单</router-link>  //其实这个就是一个a标签
+（3）
+jumpToLogin:funciton(){通过js编程方式来实现
+    this.$router.push("/login");
+}
+###参数传递
+（1）明确发送方和接收方
+（2）配置接收方法路由地址
+原生
+{path:"/main",component:MainComponent}
+{path:"/main/:uname/:upwd",component:MainComponent}  //多个参数的时候，就多个/:变量名
+（3）接收方法获取传递的数据
+this.$route.params.uname   //params数据是个数组
+（4）跳转时，发送参数
+this.$router.push("/main/tom");
+<router-link to="/main/jerry">跳转</router-link>
+
+##### vue-resource vue http协议插件（实现ajax）
+（1）先加载vue.js,再加载vue-resource.js
+（2）使用
+    this.$http.get(url).then(function(data){},function(err){});
+
+##### vue-cli 脚手架（创建vue项目工具）
+（1）当代码修改，直接预览效果hot reload
+（2）框架已搭建好，快速进入开发
+（3）组织代码的方式：将组件通过.vue文件单独组件，放在src目录components下
+注意事项：
+（1）保证node.js正确（版本高一些 6.00以上）
+（2）保证网络通畅
+
+#### 搭建vue项目完整步骤
+（1）安装nodejs ，下载地址为：https://nodejs.org/en/
+（2）npm install -g cnpm –-registry=https://registry.npm.taobao.org ，
+     即可安装npm镜像，以后再用到npm的地方直接用cnpm来代替就好了（需要配置环境变量，百度操作文档）
+（3）cnpm install --global vue-cli  安装脚手架
+（4）进入你的项目目录，创建一个基于 webpack 模板的新项目: vue init webpack 项目名
+    1.项目名称，2.项目描述，3.作者，4.vue build 是standalone，5.install vue-router是yes，5.后面都是no
+（5）进入项目目录，执行cnpm i或者cnpm install，都是下载项目的依赖组件node_modules
+（6）npm run dev  执行项目
+搭建vue框架的教学网址：
+https://www.cnblogs.com/hellman/p/10985377.html   （这个路径中有个下载cnpm的错 --的）
+### vue cli 讲解
+（1）hot reload
+（2）创建好的项目目录结构
+（3）组件组织方式——将组件的所有内容保存在.vue 文件中放在src的components目录下
+（4）目录详解：
+    build 脚本目录
+    config 配置目录
+    node_modules 所有nodejs依赖工具包目录（37）
+    src 代码目录
+        assets 资源目录（img、css、js）
+        components 组件目录
+        router 路由配置
+        App.vue 最上层组件
+        main.js 程序入口js
+    package.json  项目描述文件
+
+注意：
+1.添加resource插件
+router/index.js中import VueResource from 'vue-resource' 引入http插件
+Vue.use(VueResoure) 加载Vue对象中
+2.跨域请求，另外方式：JSONP[]
+3.静态资源文件加载要在main.js中引入，import
