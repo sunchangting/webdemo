@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟登录请求</title>
+</head>
+<body>
+<div>
+    验证码为：<input type="text" id="captcha"/>
+    <button onclick="getCaptcha()">获取验证码</button>
+    <hr/>
+    <button onclick="login()">登录</button>
+    <hr/>
+    <button onclick="test()">调用测试接口</button>
+    <hr/>
+    <img id="verifyCodeImg">
+</div>
+<script src="js/jquery-3.5.1.js"></script>
+<script>
+    //1.获取验证码
+    function getCaptcha() {
+        $.ajax({
+            url: 'http://localhost:8001/captcha.jpg?t=1611651379236',
+            type: 'GET',
+            dataType: 'binary',
+            contentType: 'image/jpeg',
+            headers: {
+                // 'Content-Type': 'image/jpeg',
+                // 'X-Requested-With': 'XMLHttpRequest',
+                'Access-Control-Allow-Origin': '*'
+            },
+            processData: false,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true,
+                responseType: "blob"
+            },
+            beforeSend: function (xhr) {
+                // xhr.setRequestHeader('Content-Type', 'image/jpeg');
+                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            },
+            success: function (result) {
+                var blob = result;
+                var img = document.createElement("img");
+                img.onload = function (e) {
+                    window.URL.revokeObjectURL(img.src);
+                };
+                img.src = window.URL.createObjectURL(blob);
+                $('#verifyCodeImg').attr('src', img.src);
+                // if (result.Status != 1) {
+                //     myApp.alert(result.Message + '<br/>请检查数据并重试', '失败');
+                //     getCaptcha();
+                //     window.verifyCodeCD = 0;
+                // }
+                // // 成功的时候
+                // else {
+                //     myApp.addNotification({
+                //         title: '成功',
+                //         message: '已发送短信到手机，请查收'
+                //     });
+                // }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest, textStatus, errorThrown);
+                errorMsg = "获取图片验证码失败！<br/>错误信息：" + textStatus + "错误码：" + XMLHttpRequest.status + '<br/>请点击图片验证码位置重试';
+                myApp.alert(errorMsg, '网络错误');
+            }
+        });
+    }
+
+
+    //2.登录验证
+    function login() {
+
+        console.log($('#captcha').val());
+        var data = {
+            "account": "admin",
+            "captcha": $('#captcha').val(),
+            "password": "admin"
+        }
+        console.log("请求参数为：" + data)
+        $.ajax({
+            url: 'http://localhost:8001/login',// 获取自己系统后台用户信息接口
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+
+                const token = data.data.token
+                window.localStorage.setItem('yq_token', token)
+            }
+        })
+    }
+
+
+    //3.测试接口
+    function test() {
+        var userToken = window.localStorage.getItem("yq_token");
+
+        $.ajax({
+            headers: {
+                "token": userToken//此处放置请求到的用户token
+            },
+            type: "get",
+            url: "http://localhost:8001/dept/findTree",//请求url
+            contentType: "json",
+            success: (data) => {
+                console.log("调用测试接口的结果为：" + JSON.stringify(data))
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

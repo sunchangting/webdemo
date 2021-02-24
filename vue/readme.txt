@@ -189,6 +189,15 @@ this.$router.push("/main/tom");
 
 #### 搭建vue项目完整步骤
 （1）安装nodejs ，下载地址为：https://nodejs.org/en/
+    在 nodejs 安装目录下，创建 ”node_global” 和 ”node_cache” 两个文件夹
+    # 设置全局模块的安装路径到 "node_global" 文件夹
+    npm config set prefix "D:\Files\nodejs\node_global"
+    # 设置缓存到 "node_cache" 文件夹
+    npm config set cache "D:\Files\nodejs\node_cache"
+    系统变量：新建NODE_HOME，输入"D:\Files\nodejs"  todo：待检验
+    系统变量PATH：新增"%NODE_HOME%\node_global"，  #感觉没必要 (百度获得) todo：待检验
+    系统变量PATH：新增"%NODE_HOME%\node_cache"  #感觉没必要（百度获得） todo：待检验  （不配置的话vue命令不是全局命令）
+    用户变量：Path中"C:\Users\Administrator\AppData\Roaming\npm"改为"D:\Files\nodejs\node_global"
 （2）npm install -g cnpm –-registry=https://registry.npm.taobao.org ，
      即可安装npm镜像，以后再用到npm的地方直接用cnpm来代替就好了（需要配置环境变量，百度操作文档）
 （3）cnpm install --global vue-cli  安装脚手架
