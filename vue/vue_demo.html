@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>vue第一个demo</title>
@@ -63,7 +63,7 @@
     <button v-bind:disabled="isDisabled" @click="modifyColor">修改背景颜色</button>
     <h4 v-bind:style="{backgroundColor:bgBG,color:myColor}">我是标题，当点击下面按钮时会改变背景颜色</h4>
     <!--isRed为false将myRed删除-->
-    <p v-bind:class="{myRed:isRed}">文字是红色的吗？</p>
+        <p v-bind:class="{myRed:isRed}">文字是红色的吗？</p>
     <!--绑定的简写-->
     <button :disabled="isDisabled" @click="modifyColor">disabled</button>
     <h4 v-if="count<11" @click="changeCount" v-change="count">自定义指令</h4>
